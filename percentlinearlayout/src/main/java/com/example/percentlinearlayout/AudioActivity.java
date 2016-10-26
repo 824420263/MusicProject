@@ -69,7 +69,6 @@ public class AudioActivity extends AppCompatActivity{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (0 == msg.what){
-                Log.i(TAG, "startSeekBar+");
                 if (null == m_MusicPlayerService){
                     return;
                 }
@@ -110,6 +109,7 @@ public class AudioActivity extends AppCompatActivity{
         m_Next = (ImageView) findViewById(R.id.next);
         m_Setting = (ImageView) findViewById(R.id.setting);
         m_ListMusic = (ImageView) findViewById(R.id.list_music);
+        m_PopUpWindowHelper = PopUpWindowHelper.getInstance();
         MyOnClick onClick = new MyOnClick();
         m_Pre.setOnClickListener(onClick);
         m_Next.setOnClickListener(onClick);
@@ -127,8 +127,6 @@ public class AudioActivity extends AppCompatActivity{
             return;
         }
 
-        int count = cursor.getCount();
-        Log.i(TAG, "initData count:" + count);
         m_list = new ArrayList<MusicMedia>();
             while (cursor.moveToNext()) {
                 MusicMedia  m_MusicMedia = new MusicMedia();
@@ -144,20 +142,23 @@ public class AudioActivity extends AppCompatActivity{
                 int albumID = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
                 //歌曲文件的路径 ：MediaStore.Audio.Media.DATA
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+
                 //歌曲的总播放时长 ：MediaStore.Audio.Media.DURATION
                 int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                 //歌曲文件的大小 ：MediaStore.Audio.Media.SIZE
 //            Long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
-
-                m_MusicMedia.setId(id);
-                m_MusicMedia.setSong(song);
-                m_MusicMedia.setArtist(artist);
-                m_MusicMedia.setAlbum(album);
-                m_MusicMedia.setAlbumId(albumID);
-                m_MusicMedia.setUrl(path);
-                m_MusicMedia.setTime(duration);
-                Log.i(TAG, "initData toString:" + m_MusicMedia.toString());
-                m_list.add(m_MusicMedia);
+                int isMusic = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC)); // 是否为音乐
+                if (0 != isMusic && !path.contains("voice")){
+                    Log.i(TAG, "initData path :" + path);
+                    m_MusicMedia.setId(id);
+                    m_MusicMedia.setSong(song);
+                    m_MusicMedia.setArtist(artist);
+                    m_MusicMedia.setAlbum(album);
+                    m_MusicMedia.setAlbumId(albumID);
+                    m_MusicMedia.setUrl(path);
+                    m_MusicMedia.setTime(duration);
+                    m_list.add(m_MusicMedia);
+                }
             }
         cursor.close();
     }
@@ -260,7 +261,6 @@ public class AudioActivity extends AppCompatActivity{
 
         @Override
         public void onClick(View v) {
-            m_PopUpWindowHelper = PopUpWindowHelper.getInstance();
             switch (v.getId()){
                 case R.id.next:
                     nextMusic();
@@ -376,20 +376,6 @@ public class AudioActivity extends AppCompatActivity{
         m_ListMusic.setOnClickListener(null);
     }
 
-//    private String getAlbumArt(int album_Id){
-//        String mUriAlbums = "content://media/external/audio/albums";
-//        String[] projection = new String[] { "album_art" };
-//        Cursor cur = getContentResolver().query(Uri.parse(mUriAlbums + "/" + Integer.toString(album_Id)), projection, null, null, null);
-//        String artPath = null;
-//        if (null != cur && cur.getCount() > 0){
-//            cur.moveToFirst();
-//            artPath = cur.getString(0);
-//            Log.i(TAG, TAG + "artpath :" + artPath);
-//        }
-//        cur.close();
-//        return artPath;
-//    }
-
     private class MySongPlayMode implements PopUpWindowHelper.AudioListener{
 
         @Override
@@ -431,13 +417,8 @@ public class AudioActivity extends AppCompatActivity{
             }else {
                 m_ArtWork.setImageBitmap(AudioTool.getInstance().compressedBitmap(artPath, 200, 200));
             }
-            sendToMessage();
-            intent.putExtra("url", m_list.get(postion).getUrl());
-            intent.putExtra("MSG", StaticDEF.PLAY_MUSIC);
-            isplay = true;
-            m_PlayPause.setBackgroundResource(R.drawable.pause);
-            startService(intent);
-            bindService(intent, conn, Context.BIND_AUTO_CREATE);
+            index = postion;
+            playMusic(true);
         }
     }
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent"
+    >
+    <ImageView
+        android:id="@+id/setting"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="10%"
+        app:layout_heightPercent="10%"
+        android:src="@drawable/setting"/>
+
+    <ImageView
+        android:id="@+id/list_music"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="10%"
+        app:layout_heightPercent="10%"
+        android:src="@drawable/ic_notification"/>
+
+    <ImageView
+        android:id="@+id/artwork"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="30%"
+        app:layout_heightPercent="30%"/>
+
+    <com.example.percentlinearlayout.util.UIC_TextView
+        android:id="@+id/Song"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="17dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_heightPercent="10%"
+        app:layout_widthPercent="80%"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:text="@string/Song"
+        android:layout_below="@+id/artwork"
+        />
+
+    <com.example.percentlinearlayout.util.UIC_TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/Artist"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/Song"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_widthPercent="80%"
+        app:layout_heightPercent="5%"
+        android:textSize="20sp"
+        android:text="@string/Artist"/>
+    <com.example.percentlinearlayout.util.UIC_TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/Album"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/Artist"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_widthPercent="80%"
+        app:layout_heightPercent="5%"
+        android:textSize="20sp"
+        android:text="@string/Album"/>
+
+
+    <ImageView
+        android:id="@+id/pre"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/Album"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:src="@drawable/previous"/>
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_below="@+id/Album"
+        android:layout_toRightOf="@+id/pre"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_widthPercent="60%"
+        android:indeterminate="false" />
+
+
+    <ImageView
+        android:id="@+id/next"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/Album"
+        android:layout_toRightOf="@+id/seekbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:src="@drawable/next"/>
+
+    <ImageView
+        android:id="@+id/playpause"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/seekbar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="30%"
+        app:layout_heightPercent="20%"
+        />
+
+</android.support.percent.PercentRelativeLayout>

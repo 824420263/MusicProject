@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PercentLinearLayout</string>
+    <!-- TextView-->
+    <string name="Song">Song</string>
+    <string name="Artist">Artist</string>
+    <string name="Album">Album</string>
+
+    <string name="setting">歌曲设置</string>
+
+    <string name="Audio">音乐播放</string>
+    <string name="Video">视频播放</string>
+    <string name="Image">图片播放</string>
+</resources>

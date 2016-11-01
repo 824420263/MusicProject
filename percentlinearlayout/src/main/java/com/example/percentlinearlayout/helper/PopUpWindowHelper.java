@@ -66,7 +66,7 @@ public class PopUpWindowHelper {
         return view;
     }
 
-    public View setMuiscList(Context context, final ArrayList<MusicMedia> data){
+    public View setMuiscList(Context context, ArrayList<MusicMedia> data){
         View view = LayoutInflater.from(context).inflate(R.layout.setting, null);
         TextView tv = (TextView) view.findViewById(R.id.setting_tv);
         tv.setVisibility(View.GONE);

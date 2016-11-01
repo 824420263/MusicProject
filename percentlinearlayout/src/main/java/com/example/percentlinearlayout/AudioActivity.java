@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.percentlinearlayout.helper.PopUpWindowHelper;
 import com.example.percentlinearlayout.tool.AudioTool;
+import com.example.percentlinearlayout.util.UIC_VoiceDialog;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,7 @@ public class AudioActivity extends AppCompatActivity{
     private MusicPlayerService m_MusicPlayerService = null;
     private MediaPlayer mediaPlayer = null;
     private PopUpWindowHelper m_PopUpWindowHelper = null;
+    private UIC_VoiceDialog m_Dialog = null;
     private Intent intent = null;
     private boolean isplay = true;
     private int index = 0;
@@ -110,6 +114,7 @@ public class AudioActivity extends AppCompatActivity{
         m_Setting = (ImageView) findViewById(R.id.setting);
         m_ListMusic = (ImageView) findViewById(R.id.list_music);
         m_PopUpWindowHelper = PopUpWindowHelper.getInstance();
+
         MyOnClick onClick = new MyOnClick();
         m_Pre.setOnClickListener(onClick);
         m_Next.setOnClickListener(onClick);
@@ -161,6 +166,7 @@ public class AudioActivity extends AppCompatActivity{
                 }
             }
         cursor.close();
+
     }
 
 
@@ -276,7 +282,6 @@ public class AudioActivity extends AppCompatActivity{
                     }
                     break;
                 case R.id.setting:
-                    Log.i(TAG, TAG + "setting");
                     m_PopUpWindowHelper.setM_AudioListener(new MySongPlayMode());
                    if (m_PopUpWindowHelper.isShowing()){
                        m_PopUpWindowHelper.hide();
@@ -284,7 +289,7 @@ public class AudioActivity extends AppCompatActivity{
                        ArrayList<String> listData = new ArrayList<String>();
                        listData.add("单曲循环");
                        listData.add("全曲循环");
-                       listData.add("ssss");
+                       listData.add("音量调整");
                        listData.add("ssss2");
                        listData.add("ssss3");
                        listData.add("ssss4");
@@ -292,7 +297,7 @@ public class AudioActivity extends AppCompatActivity{
                        listData.add("ssss6");
                        listData.add("ssss7");
                        listData.add("ssss8");
-                       m_PopUpWindowHelper.init(WindowManager.LayoutParams.MATCH_PARENT, 800, m_PopUpWindowHelper.setListView(AudioActivity.this, listData),
+                       m_PopUpWindowHelper.init(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, m_PopUpWindowHelper.setListView(AudioActivity.this, listData),
                                v);
 
                    }
@@ -362,6 +367,7 @@ public class AudioActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, TAG + "onDestroy");
+        handler.removeMessages(0);
         if(null != m_MusicPlayerService){
             if (null != mediaPlayer){
                 mediaPlayer.stop();
@@ -374,6 +380,7 @@ public class AudioActivity extends AppCompatActivity{
         m_PlayPause.setOnClickListener(null);
         m_Setting.setOnClickListener(null);
         m_ListMusic.setOnClickListener(null);
+        m_Dialog.dismiss();
     }
 
     private class MySongPlayMode implements PopUpWindowHelper.AudioListener{
@@ -386,6 +393,14 @@ public class AudioActivity extends AppCompatActivity{
                     break;
                 case 1:
                     mediaPlayer.setLooping(false);
+                    break;
+                case 2:
+                    UIC_VoiceDialog.Builder builder = new UIC_VoiceDialog.Builder(AudioActivity.this);
+                    m_Dialog = builder.create();
+                    m_Dialog.setCanceledOnTouchOutside(true);
+                    m_Dialog.show();
+                    break;
+                default:
                     break;
             }
         }

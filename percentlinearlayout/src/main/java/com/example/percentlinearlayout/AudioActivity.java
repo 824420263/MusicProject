@@ -380,7 +380,10 @@ public class AudioActivity extends AppCompatActivity{
         m_PlayPause.setOnClickListener(null);
         m_Setting.setOnClickListener(null);
         m_ListMusic.setOnClickListener(null);
-        m_Dialog.dismiss();
+        if (null != m_Dialog){
+            m_Dialog.dismiss();
+        }
+
     }
 
     private class MySongPlayMode implements PopUpWindowHelper.AudioListener{

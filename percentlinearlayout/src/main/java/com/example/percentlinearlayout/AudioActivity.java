@@ -26,7 +26,7 @@ import com.example.percentlinearlayout.tool.AudioTool;
 import com.example.percentlinearlayout.util.UIC_VoiceDialog;
 
 import java.util.ArrayList;
-
+//xuli
 public class AudioActivity extends AppCompatActivity{
     private static final String TAG = "AudioActivity";
     private TextView m_Song = null;
